@@ -10,5 +10,9 @@
   {
     "name": "Example Request",
     "body": "My name is Tyson and I will be your designer with Hansen Buildings! Thank you for reaching out to get started on a quote with me.\n\nDo you happen to have any pictures or examples of what you are looking for that I can use to model your first quote after?"
+  },
+  {
+    "name": "Contractor Info",
+    "body": "We specialize in the structural engineering and material production for the building kits. We do not offer any construction services.\n\nHowever, we do have a list of independent builders across the country that we can put you in contact with when the time is right. As a general rule of thumb, you can expect a contractor to charge somewhere between 40-60% of your material kit price. Of course, the only way to get complete and accurate quotes would be to inquire with local contractors about your specific project and timeline.\n\nThere are two ways to gain access to our builders list:\n\nBy purchasing a material kit from us\n\nOr\n\nPlacing a 5% down payment on your project which is refundable in the event we are unable to locate a qualified builder in your area.\n\nFeel free to look around locally on your own first, but keep that option in mind if you need a little help with the builder search!"
   }
 ]
