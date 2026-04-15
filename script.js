@@ -1,211 +1,129 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
+
+    // ── Element refs ──
     const templateContainer = document.querySelector('.templatecontainer');
-    const templateTab = document.querySelector('.templatetab');
-    const templateButton = document.getElementById('templates');
-    const closeButton = document.getElementById('closeTemplates');
+    const templateTab       = document.querySelector('.templatetab');
+    const templateButton    = document.getElementById('templates');
+    const closeButton       = document.getElementById('closeTemplates');
+    const navbuttons        = document.getElementById('navbuttons');
+    const activeTemplate    = document.getElementById('activeTemplate');
+    const copyButton        = document.getElementById('copyButton');
+    const fileInput         = document.getElementById('fileInput');
+    const timelineButtons   = document.querySelectorAll('.timeline button');
 
-    const noCallPar = document.getElementById('noCall');
-    const noCallButton = document.getElementById('noCall2');
+    // Currently displayed template text
+    let activeText = '';
 
-    const afterCallPar = document.getElementById('afterCall');
-    const afterCallButton = document.getElementById('afterCall2');
-
-    const exampleRequestPar = document.getElementById('exampleRequest');
-    const exampleRequestButton = document.getElementById('exampleRequest2');
-
-    const timelineButtons = document.querySelectorAll('.timeline button');
-
-    function adjustContainerRightPosition() {
+    // ── Panel open / close ──
+    function openPanel() {
         templateContainer.style.right = '0';
-        const hiddenButton = document.getElementById('closeTemplates');
-        hiddenButton.style.display = 'block';
-    }
-
-    function resetContainerRightPosition() {
-        templateContainer.style.right = '';
-        const hiddenButton = document.getElementById('closeTemplates');
-        hiddenButton.style.display = 'none';
-        templateTab.style.display = 'none'; // Hide the templatetab
-    }
-
-    function showTemplateTab() {
+        closeButton.style.display = 'block';
         templateTab.style.display = 'block';
+        fileInput.style.display = 'block';
     }
 
-    // template select buttons
-    function showNoCall() {
-        noCallPar.style.display = 'block';
-        afterCallPar.style.display = 'none';
-        exampleRequestPar.style.display = 'none';
+    function closePanel() {
+        templateContainer.style.right = '';
+        closeButton.style.display = 'none';
+        templateTab.style.display = 'none';
+        fileInput.style.display = 'none';
     }
 
-    function showAfterCallPar() {
-        afterCallPar.style.display = 'block';
-        noCallPar.style.display = 'none';
-        exampleRequestPar.style.display = 'none';
-    }
+    templateButton.addEventListener('click', openPanel);
+    closeButton.addEventListener('click', closePanel);
 
-    function showExampleRequest() {
-        exampleRequestPar.style.display = 'block';
-        noCallPar.style.display = 'none';
-        afterCallPar.style.display = 'none';
-    }
+    // ── Load templates.json and build nav buttons ──
+    fetch('templates.json')
+        .then(function (res) {
+            if (!res.ok) throw new Error('Could not load templates.json');
+            return res.json();
+        })
+        .then(function (templates) {
+            templates.forEach(function (tpl) {
+                const btn = document.createElement('button');
+                btn.textContent = tpl.name;
 
-    // timeline highlight function
-    function highlightMonth() {
-        let currentMonth = new Date().getMonth();
-        let monthButtons = document.querySelectorAll('.timeline button');
+                btn.addEventListener('click', function () {
+                    // Show the template text (preserve line breaks)
+                    activeTemplate.style.display = 'block';
+                    activeTemplate.innerText = tpl.body;
+                    copyButton.style.display = 'block';
+                    activeText = tpl.body;
 
-        // remove any previous highlight
-        monthButtons.forEach(button => {
-            button.classList.remove('highlighted');
+                    // Highlight active nav button
+                    navbuttons.querySelectorAll('button').forEach(b => b.classList.remove('active-template'));
+                    btn.classList.add('active-template');
+                });
+
+                navbuttons.appendChild(btn);
+            });
+        })
+        .catch(function (err) {
+            navbuttons.innerHTML = '<p style="color:#f66;padding:20px;">Failed to load templates.json — make sure the file is in the same folder as index.html.</p>';
+            console.error(err);
         });
 
-        // add highlight to current month
-        monthButtons[currentMonth].classList.add('highlighted');
-    }
+    // ── Copy active template to clipboard ──
+    copyButton.style.display = 'none';
+    copyButton.addEventListener('click', function () {
+        if (!activeText) return;
+        navigator.clipboard.writeText(activeText).catch(function () {
+            // Fallback for older browsers
+            const ta = document.createElement('textarea');
+            ta.value = activeText;
+            document.body.appendChild(ta);
+            ta.select();
+            document.execCommand('copy');
+            document.body.removeChild(ta);
+        });
 
-    function goalMonth() {
-        if (this.classList.contains('goalmonth')) {
-            this.classList.remove('goalmonth');
-        } else {
-            this.classList.add('goalmonth');
-        }
-    }
-
-    // form submission to dashboard
-    function displaySubmittedValue(value) {
-        var dashboard = document.getElementById('dashboard');
-        var itemDiv = document.createElement('div');
-        itemDiv.textContent = '' + value;
-        dashboard.appendChild(itemDiv);
-    }
-
-    document.getElementById('buildingfeatures').addEventListener('submit', function(event) {
-        event.preventDefault(); // Prevent submission
-        var formData = new FormData(this);
-        var feature = formData.get('feature');
-        displaySubmittedValue(feature);
-        this.reset(); // Reset form
+        // Brief visual feedback
+        copyButton.textContent = 'Copied!';
+        setTimeout(function () { copyButton.textContent = 'Copy Template'; }, 1500);
     });
 
-    // clear dashboard
-    function clearDashboard() {
-         var dashboard = document.getElementById('dashboard');
-    var childNodes = dashboard.childNodes;
-    for (var i = childNodes.length - 1; i >= 0; i--) {
-        if (childNodes[i].nodeName !== 'H3') {
-            dashboard.removeChild(childNodes[i]);
-		}
-	}	
-	var contactInfoForm = document.getElementById('contactInfo');
-	contactInfoForm.reset();
-	
-  }
-  
-  //copy template buttons
-  const copyButton1 = document.getElementById('copyButton1');
-  const copyButton2 = document.getElementById('copyButton2');
-  const copyButton3 = document.getElementById('copyButton3');
- 
- function showCopyButton1 () {
-	 copyButton1.style.display = 'block';
-        copyButton2.style.display = 'none';
-		copyButton3.style.display = 'none';
-	 
- }
- 
- function showCopyButton2 () {
-	 copyButton2.style.display = 'block';
-        copyButton1.style.display = 'none';
-		copyButton3.style.display = 'none';
-	 
- }
- 
- function showCopyButton3 () {
-	 copyButton3.style.display = 'block';
-        copyButton2.style.display = 'none';
-		copyButton1.style.display = 'none';
-	 
- }
- 
- function copySpan(copyText) {
-    var range = document.createRange();
-    range.selectNode(document.getElementById(copyText));
-    window.getSelection().removeAllRanges();
-    window.getSelection().addRange(range);
-    document.execCommand('copy');
-    window.getSelection().removeAllRanges();
-}
+    // ── Timeline: highlight current month ──
+    function highlightMonth() {
+        const currentMonth = new Date().getMonth();
+        timelineButtons.forEach(function (btn, i) {
+            btn.classList.remove('highlighted');
+            if (i === currentMonth) btn.classList.add('highlighted');
+        });
+    }
 
-function showFileInput () {
-	const fileInput = document.getElementById('fileInput');
-	fileInput.style.display = 'block';
-}
-
-function hideFileInput () {
-	const fileInput = document.getElementById('fileInput');
-	fileInput.style.display = 'none';
-}
-
-    // Event listener for the clear button
-    document.getElementById('clearButton').addEventListener('click', function() {
-        clearDashboard();
-   });
-   
-   //event listeners for copy buttons
-   copyButton1.addEventListener('click', function() {
-    copySpan('copyText1');
-});
-
-copyButton2.addEventListener('click', function() {
-    copySpan('copyText2');
-});
-
-copyButton3.addEventListener('click', function() {
-    copySpan('copyText3');
-});
-
-    // Initially hide the template tab
-    templateTab.style.display = 'none';
-
-templateButton.addEventListener('click', function() {
-	adjustContainerRightPosition();
-	showTemplateTab();
-	showFileInput();
-});
-    
-	
-    
-     closeButton.addEventListener('click', function() {
-		 resetContainerRightPosition();
-		 hideFileInput();
-		 
-	 });
-
-   
-	noCallButton.addEventListener('click', function() {
-    showNoCall();
-    showCopyButton1();
-	});
-
-	afterCallButton.addEventListener('click', function() {
-    showAfterCallPar();
-    showCopyButton2();
-});
-
-	exampleRequestButton.addEventListener('click', function() {
-    showExampleRequest();
-    showCopyButton3();
-});
+    timelineButtons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            this.classList.toggle('goalmonth');
+        });
+    });
 
     highlightMonth();
 
-    timelineButtons.forEach(button => {
-        button.addEventListener('click', goalMonth);
+    // ── Dashboard notes ──
+    function displaySubmittedValue(value) {
+        const dashboard = document.getElementById('dashboard');
+        const itemDiv = document.createElement('div');
+        itemDiv.textContent = value;
+        dashboard.appendChild(itemDiv);
+    }
+
+    document.getElementById('buildingfeatures').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const feature = new FormData(this).get('feature');
+        if (feature) displaySubmittedValue(feature);
+        this.reset();
     });
-	
-	
 
+    document.getElementById('clearButton').addEventListener('click', function () {
+        const dashboard = document.getElementById('dashboard');
+        Array.from(dashboard.childNodes).forEach(function (node) {
+            if (node.nodeName !== 'H3') dashboard.removeChild(node);
+        });
+        document.getElementById('contactInfo').reset();
+    });
 
+    // ── Init ──
+    templateTab.style.display = 'none';
+    closeButton.style.display = 'none';
+    activeTemplate.style.display = 'none';
 });
