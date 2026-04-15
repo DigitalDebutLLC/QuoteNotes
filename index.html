@@ -10,119 +10,79 @@
 <body>
 
 	<div class="templatecontainer">
-	<button id="closeTemplates">Close Templates</button>
-	<input type="file" id='fileInput' multiple>
-		
+		<button id="closeTemplates">Close Templates</button>
+		<input type="file" id="fileInput" multiple>
+
 		<div class="templatetab">
-			
 			<div class="templatebackground">
-				<div class="navbuttons">
-					<button id="noCall2">No Call</button>
-					<button id="afterCall2">After Call</button>
-					<button id="exampleRequest2">Example Request</button>
-				</div>
-				
-				<div class="display" >
-					<p id="noCall"><span id="copyText1">My name is Tyson and I will be your designer with Hansen Buildings! Thank you for reaching out to get started on a quote with me. 
-								Here is the preliminary quote I put together to get us moving in the right direction. We are totally custom, so please feel free 
-								to come back with any adjustments you see fit.<br><br>
-								<b><i>What is included in that price?</b></i><br><br>
-								&bull; 2 sets of engineer- stamped plans (engineering costs included in the quote)<br>
-								&bull; A Lifetime Structural Guarantee on the building itself<br>
-								&bull; A fully-illustrated construction manual<br> 
-								&bull; Access to our tech support line for any questions or clarification while in the field constructing<br>
-								&bull; All materials listed on the quote<br>
-								&bull; Delivery of materials to your jobsite<br><br>
-								When are you hoping to get started on this project?<br><br>
-								How do you plan to be using your new building? 
-					</span></p>
-					
-					<p id='afterCall'> <span id="copyText2">Thank you for taking the time to speak with me today! Attached is the preliminary quote I put together after our conversation. 
-									We are totally custom, so please feel free to come back with any adjustments you see fit.<br><br>
-									<b><i>What is included in that price?</b></i><br>
-									&bull; 2 sets of engineer- stamped plans (engineering costs included in the quote)<br>
-									&bull; A Lifetime Structural Guarantee on the building itself<br>
-									&bull; A fully-illustrated construction manual <br>
-									&bull; Access to our tech support line for any questions or clarification while in the field constructing<br>
-									&bull; All materials listed on the quote<br>
-									&bull; Delivery of materials to your jobsite<br><br>
-									How does everything look so far? <br>
-					</span></p>
-					
-					<p id='exampleRequest'> <span id="copyText3">My name is Tyson and I will be your designer with Hansen Buildings! Thank you for reaching out to 
-											get started on a quote with me.<br><br>Do you happen to have any pictures or examples of what you are looking for that I can
-											use to model your first quote after? 
 
-					</span></p>
-				
+				<!-- Nav buttons built by JS from templates.json -->
+				<div class="navbuttons" id="navbuttons"></div>
+
+				<!-- Template text built by JS -->
+				<div class="display" id="templateDisplay">
+					<p id="activeTemplate"></p>
 				</div>
-				
-				<button id="copyButton1">Copy Template</button>
-				<button id="copyButton2">Copy Template</button>
-				<button id="copyButton3">Copy Template</button>
-			
+
+				<!-- Single copy button, reused for whichever template is active -->
+				<button id="copyButton">Copy Template</button>
+
 			</div>
-			
 		</div>
-
 	</div>
-	
+
 	<div class="quotenotes">
-	
+
 		<div class="title">
 			<h1>Quote Notes</h1>
 		</div>
-		
+
 		<form id="contactInfo">
 			<label for="name">Name :</label>
 			<input name="name" type="text">
-			
+
 			<label for="email">Email :</label>
 			<input name="email" type="email">
-			
+
 			<label for="location">Location :</label>
 			<input name="location" type="text">
 		</form>
-		
-			<div class="timeline">
-				<button id="timeline">Jan</button>
-				<button id="timeline">Feb</button>
-				<button id="timeline">Mar</button>
-				<button id="timeline">Apr</button>
-				<button id="timeline">May</button>
-				<button id="timeline">Jun</button>
-				<button id="timeline">Jul</button>
-				<button id="timeline">Aug</button>
-				<button id="timeline">Sep</button>
-				<button id="timeline">Oct</button>
-				<button id="timeline">Nov</button>
-				<button id="timeline">Dec</button>
-			</div>
-		
-		
+
+		<div class="timeline">
+			<button>Jan</button>
+			<button>Feb</button>
+			<button>Mar</button>
+			<button>Apr</button>
+			<button>May</button>
+			<button>Jun</button>
+			<button>Jul</button>
+			<button>Aug</button>
+			<button>Sep</button>
+			<button>Oct</button>
+			<button>Nov</button>
+			<button>Dec</button>
+		</div>
+
 		<div class="dashboard" id="dashboard">
 			<h3>Notes :</h3>
-			
 		</div>
-		
+
 		<div class="buildingfeatures">
 			<form id="buildingfeatures">
-				<label for="buildingfeatures">Building Features :</label>
+				<label for="feature">Building Features :</label>
 				<input name="feature" type="text">
-				
+
 				<div class="quotecountcontainer">
 					<div class="quotecount"></div>
 					<button id="addnote" type="submit">Add Note</button>
-					<button id="clearButton">Clear</button>
+					<button id="clearButton" type="button">Clear</button>
 				</div>
-				
-			</form>	
+			</form>
 		</div>
-		
-	</div>
-	
-	<button id="templates">Email Templates</button>
 
+	</div>
+
+	<button id="templates">Email Templates</button>
 
 	<script src="script.js"></script>
 </body>
